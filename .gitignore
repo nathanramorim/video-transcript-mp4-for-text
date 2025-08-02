@@ -1,10 +1,7 @@
 # Ignorar arquivos de entrada e saída
-input/
-output/
 *.wav
 *.mp4
 *.zip
 *.tar.gz
-model/
 __pycache__/
 .env
