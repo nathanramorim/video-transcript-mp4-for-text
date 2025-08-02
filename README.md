@@ -1,5 +1,9 @@
 # MP4 for Text 🚀✨
 
+<p align="center">
+  <img src="capa-video-to-text.jpeg" alt="Capa MP4 for Text" width="600" />
+</p>
+
 Transforme vídeos em conhecimento, gere valor e surpreenda seus clientes!
 
 **Bem-vindo ao MP4 for Text!**
@@ -84,6 +88,10 @@ OPENAI_TRANSCRIBE_PROMPT="Transcreva todo o conteúdo do áudio, sem resumir ou 
 ---
 
 ## Como Usar
+
+<p align="center">
+  <img src="how-is.png" alt="Como funciona" width="600" />
+</p>
 
 1. Coloque o vídeo mp4 na pasta `input/`
 2. Execute o script principal:
