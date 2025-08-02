@@ -2,21 +2,49 @@
 
 Sistema para transcrição automática de vídeos mp4 e organização consultiva de reuniões, utilizando o framework RIPER-Copilot.
 
+## Opções de Transcrição
+
+### Dois motores disponíveis:
+
+**1. Vosk (offline, gratuito)**
+- Motor padrão para transcrição offline
+- Sem custos, mas qualidade pode variar
+- Requer modelo português na pasta `model/`
+
+**2. OpenAI GPT-4o-mini-transcribe (online, pago)**
+- Qualidade superior de transcrição
+- **Custo aproximado: ~$0,05 USD para áudio de 45 minutos** 
+- Requer token da OpenAI no arquivo `.env`
+- Divisão automática para áudios longos (limite: 1400s por parte)
+
 ## Como executar a transcrição
 
 1. Coloque o vídeo mp4 desejado na pasta `input/`.
-2. Certifique-se de que o modelo Vosk para português está na pasta `model/`.
-3. No terminal, execute:
+2. Configure o ambiente (veja seção "Configuração" abaixo).
+3. Execute o script:
 
 ```bash
-python main.py --cliente NOME_DO_CLIENTE
+python main.py
 ```
 
-4. O resultado será gerado na pasta `output/` como um arquivo markdown com a transcrição.
+4. Escolha o motor de transcrição no menu interativo.
+5. Selecione os vídeos e informe o nome do cliente.
+6. O resultado será gerado na pasta `output/` como um arquivo markdown.
 
-**Exemplo:**
+## Configuração
+
+### Para usar Vosk (offline):
+- Baixe o modelo português em: https://alphacephei.com/vosk/models
+- Extraia na pasta `model/` do projeto
+
+### Para usar OpenAI (online):
+1. Crie um arquivo `.env` na raiz do projeto:
 ```bash
-python main.py --cliente LS_ASSESSORIA_JURIDICA
+OPENAI_API_KEY=sua_chave_aqui
+```
+2. Instale dependências adicionais:
+```bash
+pip install openai python-dotenv
 ```
 
 ## Como funciona
@@ -35,12 +63,35 @@ python main.py --cliente LS_ASSESSORIA_JURIDICA
    - Prompts e instruções customizadas estão em `custom-instructions/` e `.github/prompts/`.
 
 ## Requisitos
+
 - Python 3.13+
 - ffmpeg instalado no sistema
-- Modelo Vosk para português na pasta `model/`
-- Dependências: `vosk`, `argparse`, etc. (veja instruções no script principal)
+- Dependências básicas: `vosk` (para modo offline)
+- Dependências adicionais: `openai python-dotenv` (para modo online)
+
+Instale todas as dependências com:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Custos e Performance
+
+### Comparação dos motores
+
+| Motor | Custo | Qualidade | Velocidade | Requisitos |
+|-------|--------|-----------|------------|------------|
+| Vosk | Gratuito | Boa | Média | Modelo local |
+| OpenAI GPT-4o-mini | ~$0,05 USD/45min | Excelente | Rápida | Token API |
+
+**Detalhes de custo OpenAI:**
+
+- Áudio de 45 minutos: aproximadamente $0,05 USD
+- Divisão automática para áudios > 23 minutos (limite técnico)
+- Cobrança por minuto de áudio processado
 
 ## Observações
+
 - Não é necessário subir os arquivos das pastas `input/` e `output/` para o repositório.
 - O sistema é totalmente offline e pode ser adaptado para outros idiomas/modelos.
 - Para dúvidas ou personalizações, consulte os arquivos de instrução do projeto.
