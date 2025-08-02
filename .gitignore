@@ -3,5 +3,11 @@
 *.mp4
 *.zip
 *.tar.gz
+input/
+output/
+memory-bank/
 __pycache__/
 .env
+.vscode/
+custom-instructions/
+.github/
