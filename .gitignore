@@ -3,5 +3,7 @@
 *.mp4
 *.zip
 *.tar.gz
+input/
+output/
 __pycache__/
 .env
