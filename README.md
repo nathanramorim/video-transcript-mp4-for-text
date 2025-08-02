@@ -1,8 +1,6 @@
 
 # MP4 for Text 🚀✨
 
-# MP4 for Text 🚀✨
-
 <p align="center">
    <img src="how-is.png" alt="Como funciona" width="600" />
 </p>
@@ -162,7 +160,7 @@ Projeto mantido por **Nathan Amorim**.
 Redes sociais:
 
 <p align="left">
-   <a href="https://github.com/nathanramorim">
+   <a href="https://github.com/nathanramorim/video-transcript-mp4-for-text">
       <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
    </a>
    <a href="https://www.instagram.com/nathan.ramorim/">
