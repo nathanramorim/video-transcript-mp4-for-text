@@ -1,0 +1,7 @@
+{
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "chat.instructionsFilesLocations": {
+    "instructions/": true
+  },
+  "github.copilot.chat.codeGeneration.instructions":"Siga as instruções do framework RIPER-Copilot definidas nos arquivos de instruções do projeto."
+}
