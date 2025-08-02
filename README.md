@@ -1,4 +1,9 @@
+
 # MP4 for Text 🚀✨
+
+<p align="center">
+   <img src="how-is.png" alt="Como funciona" width="600" />
+</p>
 
 Transforme vídeos em conhecimento, gere valor e surpreenda seus clientes!
 
@@ -160,17 +165,6 @@ Edite os prompts em `custom-instructions/` para personalizar a análise consulti
 ## Nota Importante
 
 ⚠️ **Atenção:** Em áudios longos divididos automaticamente, pode ocorrer perda de informação no final da transcrição. Estamos investigando e ajustando o algoritmo de divisão para garantir que todo o conteúdo seja preservado. Assim que o problema for resolvido, esta nota será atualizada!
-
----
-
-## Licença e Créditos
-
-Projeto mantido por Nathan Amorim:
-- [GitHub](https://github.com/nathanramorim)
-- [Instagram](https://www.instagram.com/nathan.ramorim/)
-- [LinkedIn](https://www.linkedin.com/in/nathanramorim/)
-
-Uso livre para fins consultivos, educacionais e profissionais.
 
 ---
 
@@ -534,4 +528,26 @@ pip install -r requirements.txt
 
 ---
 
-**Este projeto é mantido por LS_ASSESSORIA_JURIDICA e segue boas práticas de documentação e automação consultiva.**
+
+## Licença e Créditos
+
+Projeto mantido por **Nathan Amorim**.
+
+
+Redes sociais:
+
+<p align="left">
+   <a href="https://github.com/nathanramorim">
+      <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+   </a>
+   <a href="https://www.instagram.com/nathan.ramorim/">
+      <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram" />
+   </a>
+   <a href="https://www.linkedin.com/in/nathanramorim/">
+      <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+   </a>
+</p>
+
+Uso livre para fins consultivos, educacionais e profissionais.
+
+---

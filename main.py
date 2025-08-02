@@ -222,7 +222,6 @@ def main():
     # Carregar variáveis do .env se existir
     dotenv.load_dotenv()
 
-    print("\n=== Transcrição de vídeos ===\n")
     print("Escolha o motor de transcrição:")
     print("[1] Vosk (offline)")
     print("[2] OpenAI GPT-4o (requer token)")
@@ -261,12 +260,13 @@ def main():
         if os.path.exists(audio_path):
             if usar_openai:
                 transcription = transcribe_audio_openai(audio_path)
+                # Se transcription for None, pode ser erro técnico ou cancelamento do usuário
                 if transcription is None:
-                    print("[ERRO] Não foi possível transcrever via OpenAI. Deseja tentar via Vosk? [s/n]")
-                    if input().strip().lower() == "s":
-                        transcription = transcribe_audio(audio_path)
-                    else:
-                        transcription = ""
+                    # Verifica se foi erro técnico (não cancelamento)
+                    # O transcribe_audio_openai já mostra mensagem de cancelamento
+                    # Aqui só oferece Vosk se não foi cancelamento
+                    # Se o usuário cancelou, não faz nada, só pula para o próximo vídeo
+                    continue
             else:
                 transcription = transcribe_audio(audio_path)
             save_markdown(transcription, cliente, video.name)
