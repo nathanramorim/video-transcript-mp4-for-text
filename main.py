@@ -2,7 +2,7 @@ import contextlib
 import math
 
 # Função para dividir áudio WAV em partes de até 1400 segundos
-def split_wav(audio_path, max_seconds=1400):
+def split_wav(audio_path, max_seconds=1400, overlap_seconds=15):
     import wave
     import math
     parts = []
@@ -12,24 +12,25 @@ def split_wav(audio_path, max_seconds=1400):
         sampwidth = wf.getsampwidth()
         nchannels = wf.getnchannels()
         duration = nframes / float(framerate)
-        total_parts = math.ceil(duration / max_seconds)
-        for i in range(total_parts):
-            start_frame = int(i * max_seconds * framerate)
-            # O último segmento deve ir até o último frame
-            if i == total_parts - 1:
-                end_frame = nframes
-            else:
-                end_frame = int(min((i+1) * max_seconds * framerate, nframes))
+        # Novo cálculo de partes considerando sobreposição
+        step_frames = int((max_seconds - overlap_seconds) * framerate)
+        part_frames = int(max_seconds * framerate)
+        start_frame = 0
+        idx = 1
+        while start_frame < nframes:
+            end_frame = min(start_frame + part_frames, nframes)
             wf.setpos(start_frame)
             frames = wf.readframes(end_frame - start_frame)
-            part_path = audio_path.parent / f"{audio_path.stem}_part{i+1}.wav"
+            part_path = audio_path.parent / f"{audio_path.stem}_part{idx}.wav"
             with wave.open(str(part_path), 'wb') as out:
                 out.setnchannels(nchannels)
                 out.setsampwidth(sampwidth)
                 out.setframerate(framerate)
                 out.writeframes(frames)
-            print(f"[DEBUG] Parte {i+1}: frames {start_frame} até {end_frame} (total: {end_frame-start_frame})")
+            print(f"[DEBUG] Parte {idx}: frames {start_frame} até {end_frame} (total: {end_frame-start_frame}) [sobreposição: {overlap_seconds}s]")
             parts.append(part_path)
+            start_frame += step_frames
+            idx += 1
     return parts
 import os
 import sys
@@ -76,41 +77,55 @@ def transcribe_audio_openai(audio_path):
         print("❌ Transcrição cancelada pelo usuário.")
         return None
     
-    if duration > 1400:
+    # Parâmetros de chunking e prompt customizado
+    max_seconds = int(os.getenv("OPENAI_MAX_SECONDS", "900"))
+    overlap_seconds = int(os.getenv("OPENAI_OVERLAP_SECONDS", "15"))
+    custom_prompt = os.getenv("OPENAI_TRANSCRIBE_PROMPT", "Transcreva todo o conteúdo do áudio, sem resumir ou omitir partes. Mantenha a ordem e o máximo de detalhes possível.")
+    print(f"[INFO] Usando {max_seconds}s por parte, sobreposição de {overlap_seconds}s e prompt customizado para OpenAI.")
+    if duration > max_seconds:
         print(f"[INFO] Áudio com {duration:.2f}s excede limite do OpenAI. Dividindo em partes...")
-        parts = split_wav(audio_path, max_seconds=1400)
+        parts = split_wav(audio_path, max_seconds=max_seconds, overlap_seconds=overlap_seconds)
         full_transcript = ""
         print(f"[DEBUG] Total de partes criadas: {len(parts)}")
-        
+        parte_vazia = 0
         for idx, part in enumerate(parts, 1):
-            print(f"[INFO] Transcrevendo parte {idx}/{len(parts)}...")
-            with open(part, "rb") as audio_file:
+            print(f"[INFO] Transcrevendo parte {idx}/{len(parts)}: {part.name} ({part.stat().st_size} bytes)")
+            tentativas = 0
+            part_text = ""
+            while tentativas < 2 and not part_text:
+                tentativas += 1
                 try:
-                    transcription = client.audio.transcriptions.create(
-                        model="gpt-4o-mini-transcribe",
-                        file=audio_file
-                    )
-                    part_text = transcription.text.strip()
-                    print(f"[DEBUG] Parte {idx} - Caracteres transcritos: {len(part_text)}")
-                    print(f"[DEBUG] Parte {idx} - Primeiros 100 chars: {part_text[:100]}...")
-                    print(f"[DEBUG] Parte {idx} - Últimos 100 chars: ...{part_text[-100:]}")
-                    
-                    if part_text:  # Só adiciona se não estiver vazio
-                        full_transcript += part_text + "\n\n"
-                    else:
-                        print(f"[AVISO] Parte {idx} resultou em transcrição vazia!")
-                        
+                    with open(part, "rb") as audio_file:
+                        transcription = client.audio.transcriptions.create(
+                            model="gpt-4o-mini-transcribe",
+                            file=audio_file,
+                            prompt=custom_prompt
+                        )
+                        part_text = transcription.text.strip()
+                        print(f"[DEBUG] Parte {idx} - Tentativa {tentativas} - Caracteres transcritos: {len(part_text)}")
+                        if part_text:
+                            print(f"[DEBUG] Parte {idx} - Primeiros 100 chars: {part_text[:100]}...")
+                            print(f"[DEBUG] Parte {idx} - Últimos 100 chars: ...{part_text[-100:]}")
+                        else:
+                            print(f"[AVISO] Parte {idx} tentativa {tentativas} resultou em transcrição vazia!")
                 except Exception as e:
-                    print(f"[ERRO] Falha na transcrição da parte {idx}: {e}")
-                    
+                    print(f"[ERRO] Falha na transcrição da parte {idx} tentativa {tentativas}: {e}")
+                    break
+            if part_text:
+                full_transcript += part_text + "\n\n"
+            else:
+                parte_vazia += 1
+                print(f"[ERRO] Parte {idx} ({part.name}) ignorada por estar vazia após {tentativas} tentativas.")
         # Limpar arquivos temporários das partes
         for part in parts:
             try:
                 os.remove(part)
             except Exception:
                 pass
-                
         print(f"[DEBUG] Transcrição final - Total de caracteres: {len(full_transcript)}")
+        print(f"[INFO] Partes ignoradas por estarem vazias: {parte_vazia} de {len(parts)}")
+        if parte_vazia:
+            print(f"[ALERTA] Algumas partes do áudio não foram transcritas. Considere diminuir o tamanho máximo por parte ou revisar o áudio original.")
         print("[INFO] Transcrição concluída via OpenAI (partes).")
         return full_transcript.strip()
     else:
@@ -118,7 +133,8 @@ def transcribe_audio_openai(audio_path):
             try:
                 transcription = client.audio.transcriptions.create(
                     model="gpt-4o-mini-transcribe",
-                    file=audio_file
+                    file=audio_file,
+                    prompt=custom_prompt
                 )
                 print("[INFO] Transcrição concluída via OpenAI.")
                 return transcription.text
