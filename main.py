@@ -103,22 +103,34 @@ def save_markdown(transcription, client_name, video_file):
     print(f"Transcrição salva em: {output_file}")
 
 def main():
-    parser = argparse.ArgumentParser(description="Processa vídeos mp4 e gera transcrição em markdown usando Vosk (offline, gratuito).")
-    parser.add_argument("--cliente", required=True, help="Nome do cliente para nomear o arquivo de saída.")
-    args = parser.parse_args()
-
+    print("\n=== Transcrição de vídeos ===\n")
     videos = list(INPUT_DIR.glob("*.mp4"))
     if not videos:
         print("Nenhum vídeo mp4 encontrado na pasta input/")
         sys.exit(1)
 
-    for video in videos:
+    print("Selecione os vídeos que deseja transcrever:")
+    for idx, video in enumerate(videos, 1):
+        print(f"[{idx}] {video.name}")
+    escolha = input("Digite os números dos vídeos separados por vírgula (ex: 1,3): ").strip()
+    indices = [int(i)-1 for i in escolha.split(",") if i.strip().isdigit() and 0 < int(i) <= len(videos)]
+    selecionados = [videos[i] for i in indices]
+    if not selecionados:
+        print("Nenhum vídeo selecionado. Encerrando.")
+        sys.exit(1)
+
+    cliente = input("Digite o nome do cliente para nomear o arquivo de saída: ").strip()
+    if not cliente:
+        print("Nome do cliente não informado. Encerrando.")
+        sys.exit(1)
+
+    for video in selecionados:
         print(f"[INFO] Processando vídeo: {video.name}")
         audio_path = video.with_suffix('.wav')
         extract_audio(video, audio_path)
         if os.path.exists(audio_path):
             transcription = transcribe_audio(audio_path)
-            save_markdown(transcription, args.cliente, video.name)
+            save_markdown(transcription, cliente, video.name)
             print(f"[INFO] Arquivo de áudio mantido: {audio_path}")
         else:
             print(f"[ERRO] Não foi possível extrair o áudio. Pulando transcrição.")
