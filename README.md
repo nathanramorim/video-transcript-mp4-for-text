@@ -162,20 +162,6 @@ Edite os prompts em `custom-instructions/` para personalizar a análise consulti
 - Requer token da OpenAI no arquivo `.env`
 - Divisão automática para áudios longos (limite: 1400s por parte)
 
-## Como executar a transcrição
-
-1. Coloque o vídeo mp4 desejado na pasta `input/`.
-2. Configure o ambiente (veja seção "Configuração" abaixo).
-3. Execute o script:
-
-```bash
-python main.py
-```
-
-4. Escolha o motor de transcrição no menu interativo.
-5. Selecione os vídeos e informe o nome do cliente.
-6. O resultado será gerado na pasta `output/` como um arquivo markdown.
-
 ## Configuração
 
 ### Para usar Vosk (offline):
@@ -190,34 +176,6 @@ OPENAI_API_KEY=sua_chave_aqui
 2. Instale dependências adicionais:
 ```bash
 pip install openai python-dotenv
-```
-
-## Como funciona
-
-1. **Transcrição de vídeo**
-   - Coloque o arquivo mp4 na pasta `input/`.
-   - Execute o script principal para gerar a transcrição em markdown.
-   - O áudio é extraído automaticamente e processado pelo modelo Vosk (offline, gratuito).
-
-2. **Organização da transcrição**
-   - Use o prompt `/organize-transcricao <caminho-do-arquivo-transcricao>` para gerar um documento estruturado com tópicos, responsável, prioridades e próximos passos.
-   - O Copilot identifica automaticamente empresa, cliente e responsável. Caso não encontre, solicita ao usuário.
-
-3. **Workflow RIPER-Copilot**
-   - O projeto segue o fluxo: RESEARCH → INNOVATE → PLAN → EXECUTE → REVIEW.
-   - Prompts e instruções customizadas estão em `custom-instructions/` e `.github/prompts/`.
-
-## Requisitos
-
-- Python 3.13+
-- ffmpeg instalado no sistema
-- Dependências básicas: `vosk` (para modo offline)
-- Dependências adicionais: `openai python-dotenv` (para modo online)
-
-Instale todas as dependências com:
-
-```bash
-pip install -r requirements.txt
 ```
 
 ## Custos e Performance
