@@ -147,58 +147,6 @@ Edite os prompts em `custom-instructions/` para personalizar a análise consulti
 
 ---
 
-## Nota Importante
-
-⚠️ **Atenção:** Em áudios longos divididos automaticamente, pode ocorrer perda de informação no final da transcrição. Estamos investigando e ajustando o algoritmo de divisão para garantir que todo o conteúdo seja preservado. Assim que o problema for resolvido, esta nota será atualizada!
-
----
-
-## Licença e Créditos
-
-Projeto mantido por **Nathan Amorim**.
-
-Redes sociais:
-
-<p align="left">
-   <a href="https://github.com/nathanramorim/video-transcript-mp4-for-text">
-      <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
-   </a>
-   <a href="https://www.instagram.com/nathan.ramorim/">
-      <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram" />
-   </a>
-   <a href="https://www.linkedin.com/in/nathanramorim/">
-      <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
-   </a>
-</p>
-
-Uso livre para fins consultivos, educacionais e profissionais.
-
----
-Sim, basta escolher Vosk no menu.
-
-**O que acontece se o áudio for muito longo?**
-OpenAI divide automaticamente em partes de até 1400s.
-
-**Como validar se a transcrição está completa?**
-Confira os logs detalhados no console. O sistema mostra quantos caracteres cada parte gerou.
-
-**Como adaptar para outros clientes?**
-Edite os prompts em `custom-instructions/` para personalizar a análise consultiva.
-
----
-
-## Licença e Créditos
-
- Projeto mantido por Nathan Amorim:
- - [GitHub](https://github.com/nathanramorim)
- - [Instagram](https://www.instagram.com/nathan.ramorim/)
- - [LinkedIn](https://www.linkedin.com/in/nathanramorim/)
- 
- Uso livre para fins consultivos, educacionais e profissionais.
-# video-transcript
-
-Sistema para transcrição automática de vídeos mp4 e organização consultiva de reuniões, utilizando o framework RIPER-Copilot.
-
 ## Opções de Transcrição
 
 ### Dois motores disponíveis:
