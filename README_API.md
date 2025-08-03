@@ -69,7 +69,26 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 ---
 
-### 6. Usando Docker (opcional)
+### 6. Endpoint de transcrição Vosk
+
+**POST /api/v1/vosk/transcribe**
+
+Envia um vídeo (mp4 ou mov) e retorna a transcrição do áudio.
+
+**Resposta:**
+```json
+{
+  "job_id": "...",
+  "status": "completed",
+  "result": "texto transcrito...",
+  "exec_time_seconds": 12.34
+}
+```
+O campo `exec_time_seconds` mostra o tempo total de processamento da transcrição.
+
+---
+
+### 7. Usando Docker (opcional)
 
 ```bash
 sudo docker-compose up --build -d
@@ -78,7 +97,7 @@ sudo docker-compose logs -f api
 
 ---
 
-### 7. Estrutura de diretórios
+### 8. Estrutura de diretórios
 
 ...existing code...
 

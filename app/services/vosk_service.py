@@ -24,6 +24,8 @@ class VoskService:
 			return temp_audio.name
 
 	def transcribe(self, job: TranscriptionJob, video_bytes: bytes) -> dict:
+		import time
+		start_time = time.time()
 		# Salva o arquivo recebido corretamente
 		with tempfile.NamedTemporaryFile(suffix=".mp4", delete=False) as temp_video:
 			temp_video.write(video_bytes)
@@ -40,7 +42,7 @@ class VoskService:
 		rec = KaldiRecognizer(self.model, wf.getframerate())
 		results = []
 		while True:
-			data = wf.readframes(4000)
+			data = wf.readframes(16000)  # chunk maior para acelerar processamento
 			if len(data) == 0:
 				break
 			if rec.AcceptWaveform(data):
@@ -55,8 +57,11 @@ class VoskService:
 		os.remove(temp_video_path)
 		os.remove(audio_path)
 
+		exec_time = round(time.time() - start_time, 2)
+
 		return {
 			"job_id": job.id,
 			"status": "completed",
-			"result": transcript
+			"result": transcript,
+			"exec_time_seconds": exec_time
 		}
