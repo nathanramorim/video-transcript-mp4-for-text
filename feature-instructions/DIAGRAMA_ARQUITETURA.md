@@ -1,4 +1,24 @@
 # 🎨 Diagrama Visual da Arquitetura
+## 🚀 Novo Fluxo: Transcrição + Organização GPT-4o mini
+
+```mermaid
+flowchart TD
+     A[Usuário envia MP4] --> B[Vosk: gera transcrição completa]
+     B --> C[GPT-4o mini: organiza documento por tópicos]
+     C --> D[Retorno: Markdown estruturado]
+```
+
+**Resumo do fluxo:**
+- O vídeo é processado pelo Vosk, gerando a transcrição completa (sem limitação de tempo).
+- A transcrição é enviada ao GPT-4o mini junto com um prompt para organizar o conteúdo por tópicos.
+- O GPT retorna um documento estruturado em Markdown (arquivo ou texto).
+- O usuário recebe o documento final já organizado.
+
+**Benefícios:**
+- Elimina a limitação de tempo do GPT para transcrição direta.
+- Garante transcrição completa e eficiente.
+- Usa o GPT apenas para sumarização/organização, respeitando limites de contexto.
+- Melhora a experiência do usuário, entregando um documento final já estruturado.
 
 ## 🏗️ Visão Geral em Camadas
 

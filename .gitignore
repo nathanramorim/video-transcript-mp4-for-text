@@ -1,3 +1,4 @@
+
 # Ignorar arquivos de entrada e saída
 *.wav
 *.mp4
@@ -11,3 +12,6 @@ __pycache__/
 .vscode/
 custom-instructions/
 .github/
+
+# Ignorar arquivos gerados de transcrição e markdown
+storage/outputs/

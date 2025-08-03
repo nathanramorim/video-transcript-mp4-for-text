@@ -4,7 +4,30 @@
   <img src="capa-video-to-text.jpeg" alt="Capa MP4 for Text" width="600" />
 </p>
 
-**Transforme vídeos em conhecimento, agora com uma API moderna e escalável!**
+
+**Transforme vídeos em conhecimento!**
+
+## Visão AS IS (MVP)
+
+O MVP implementa um fluxo simples e estático:
+- Recebe vídeo (MP4/MOV) via endpoint
+- Converte para WAV (temporário)
+- Gera transcrição (temporária)
+- Usa o arquivo de transcrição para gerar o markdown via GPT
+- Retorna o markdown para download
+- Se solicitado, salva o markdown em `output/` com nome do cliente e data
+- Sem filas, sem autenticação, sem controle de concorrência
+
+## Visão TO BE (Futuro)
+
+O projeto evoluirá para uma API robusta e escalável:
+- Autenticação JWT com tipos de usuário
+- Controle de concorrência e rate limiting
+- Processamento assíncrono com filas
+- Monitoramento, logs estruturados, CI/CD
+- Documentação automática (Swagger)
+
+---
 
 Este projeto evoluiu de um **script CLI** para uma **API FastAPI completa**, oferecendo transcrição de vídeos com autenticação, controle de concorrência e muito mais.
 
