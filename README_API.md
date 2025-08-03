@@ -2,10 +2,85 @@
 
 ## 🚀 Como executar a API
 
+
 ### 1. Pré-requisitos
-- Python 3.11 instalado
-- pip instalado
+
+- **Python 3.11 instalado**
+    - No macOS, instale com:
+      ```bash
+      brew install python@3.11
+      ```
+- **pip instalado** (vem junto com Python)
 - (Opcional) Docker e Docker Compose
+
+---
+
+### 2. Preparação do ambiente Python
+
+**Crie e ative o ambiente virtual:**
+
+```bash
+# Crie o ambiente virtual (apenas uma vez)
+python3.11 -m venv app/venv
+
+# Ative o ambiente virtual (sempre antes de rodar ou instalar pacotes)
+source app/venv/bin/activate
+```
+
+**Dica:** Após ativar, o comando `pip` deve funcionar normalmente. Se não funcionar, use:
+```bash
+python3.11 -m pip install -r requirements_api.txt
+```
+
+**Alias para facilitar:**
+Se quiser digitar só `pip` sempre, adicione ao final do seu `~/.zshrc`:
+```bash
+alias pip="python3.11 -m pip"
+```
+Depois rode:
+```bash
+source ~/.zshrc
+```
+
+---
+
+### 3. Instalação das dependências
+
+```bash
+pip install -r requirements_api.txt
+```
+
+---
+
+### 4. Configuração do ambiente
+
+- Edite o arquivo `.env` conforme necessário (baseado em `.env.example`).
+
+---
+
+### 5. Executando a API
+
+```bash
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+- Acesse a documentação interativa: [http://localhost:8000/docs](http://localhost:8000/docs)
+- Endpoint raiz: [http://localhost:8000/](http://localhost:8000/)
+
+---
+
+### 6. Usando Docker (opcional)
+
+```bash
+sudo docker-compose up --build -d
+sudo docker-compose logs -f api
+```
+
+---
+
+### 7. Estrutura de diretórios
+
+...existing code...
 
 ### 2. Preparação do ambiente
 
